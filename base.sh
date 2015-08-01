@@ -1,16 +1,18 @@
-echo "this is base!!!"
+echo "=== Subako Build Script Base ==="
 
-echo $TR_REUSE_FLAG
-echo $TR_NAME
-echo $TR_VERSION
-echo $TR_TARGET_SYSTEM
-echo $TR_TARGET_ARCH
-echo $TR_INSTALL_PATH
-echo $TR_PKGS_PATH
-echo $TR_CPU_CORE
-echo $TR_INSTALL_PREFIX
-echo $TR_PACKAGE_NAME
-echo $TR_PACKAGE_PREFIX
+echo " - reuse:          $TR_REUSE_FLAG"
+echo " - name:           $TR_NAME"
+echo " - version:        $TR_VERSION"
+echo " - target system:  $TR_TARGET_SYSTEM"
+echo " - target arch:    $TR_TARGET_ARCH"
+echo " - install path:   $TR_INSTALL_PATH"
+echo " - packages path:  $TR_PKGS_PATH"
+echo " - cpu core:       $TR_CPU_CORE"
+echo " - install prefix: $TR_INSTALL_PREFIX"
+echo " - package name:   $TR_PACKAGE_NAME"
+echo " - package prefix: $TR_PACKAGE_PREFIX"
+
+echo "================================"
 
 function CheckImport() {
     echo "base script is imported"
@@ -77,6 +79,7 @@ function PackEdgeDebFromDir() {
     # make package
     fpm $fpm_options --force -s dir -t deb -n $package_name -v $package_version --deb-compression xz --verbose $installed_dir
 
+    # TODO: fix...
     pkg_file_name=`ls`
     echo "Generated pkg name: $pkg_file_name"
 
@@ -95,6 +98,11 @@ function PackEdgeDebFromDir() {
     "display_version": "$display_version"
 }
 EOF_JSON
+
+    echo "Finished! => $json_file_name ..."
+
+    # show files
+    dpkg -c $pkg_file_name
 }
 
 
@@ -132,6 +140,7 @@ function PackDebFromDir() {
     # make package
     fpm $fpm_options --force -s dir -t deb -n $package_name -v $package_version --deb-compression xz --verbose $installed_dir
 
+    # TODO: fix...
     pkg_file_name=`ls`
     echo "Generated pkg name: $pkg_file_name"
 
@@ -150,4 +159,9 @@ function PackDebFromDir() {
     "display_version": "$raw_version"
 }
 EOF_JSON
+
+    echo "Finished! => $json_file_name ..."
+
+    # show files
+    dpkg -c $pkg_file_name
 }

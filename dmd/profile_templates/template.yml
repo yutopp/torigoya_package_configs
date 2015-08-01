@@ -1,0 +1,22 @@
+display_version: "%{display_version}"
+
+is_build_required: true
+is_link_independent: false
+
+compile:
+  extension: "dmd"
+  commands: ["dmd", "*FILES*", "*CMD*"]
+  envs:
+    "PATH": "%{install_prefix}/bin64:/usr/bin"
+    "DFLAGS": "-I%{install_prefix}/src/phobos -I%{install_prefix}/src/druntime/import -L-L%{install_prefix}/lib64 -L--no-warn-search-mismatch -L--export-dynamic"
+  fixed_commands:
+    - ["-ofprog"]
+  cpu_limit: 10
+  memory_limit: 1073741824  # 1GiB
+
+run:
+  commands: ["./prog", "*CMD*"]
+  envs:
+    "LD_LIBRARY_PATH": "%{install_prefix}/lib64"
+  cpu_limit: 10
+  memory_limit: 1073741824  # 1GiB
