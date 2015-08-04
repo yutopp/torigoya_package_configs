@@ -14,7 +14,7 @@ compile:
   cpu_limit: 10
   memory_limit: 1073741824  # 1GiB
 
-run:
+exec:
   commands: ["./prog", "*CMD*"]
   envs:
     "LD_LIBRARY_PATH": "%{install_prefix}/lib64"
