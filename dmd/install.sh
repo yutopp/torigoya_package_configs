@@ -16,28 +16,28 @@ if [ "$TR_VERSION" == "HEAD" ]; then
     #fi
 
     if [ ! -e dmd ]; then
-        git clone https://github.com/D-Programming-Language/dmd.git
+        git clone https://github.com/D-Programming-Language/dmd.git || exit -1
     else
         cd dmd
-        git fetch origin
+        git fetch origin || exit -1
         git reset --hard origin/master
         cd ../
     fi
 
     if [ ! -e druntime ]; then
-        git clone https://github.com/D-Programming-Language/druntime.git
+        git clone https://github.com/D-Programming-Language/druntime.git || exit -1
     else
         cd druntime
-        git fetch origin
+        git fetch origin || exit -1
         git reset --hard origin/master
         cd ../
     fi
 
     if [ ! -e phobos ]; then
-        git clone https://github.com/D-Programming-Language/phobos.git
+        git clone https://github.com/D-Programming-Language/phobos.git || exit -1
     else
         cd phobos
-        git fetch origin
+        git fetch origin || exit -1
         git reset --hard origin/master
         cd ../
     fi
@@ -51,11 +51,11 @@ if [ "$TR_VERSION" == "HEAD" ]; then
 
     # build
     cd dmd/src
-    make -f posix.mak -j$CPUCore MODEL=64 AUTO_BOOTSTRAP=1
+    make -f posix.mak -j$CPUCore MODEL=64 AUTO_BOOTSTRAP=1 || exit -1
     cd ../../druntime
-    make -f posix.mak -j$CPUCore MODEL=64 DMD=../dmd/src/dmd
+    make -f posix.mak -j$CPUCore MODEL=64 DMD=../dmd/src/dmd || exit -1
     cd ../phobos
-    make -f posix.mak -j$CPUCore MODEL=64 DMD=../dmd/src/dmd
+    make -f posix.mak -j$CPUCore MODEL=64 DMD=../dmd/src/dmd || exit -1
     cd ../
 
     #
