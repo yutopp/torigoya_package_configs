@@ -4,7 +4,7 @@ is_build_required: true
 is_link_independent: false
 
 compile:
-  extension: "dmd"
+  extension: "d"
   commands: ["dmd", "*FILES*", "*CMD*"]
   envs:
     "PATH": "%{install_prefix}/bin64:/usr/bin"
