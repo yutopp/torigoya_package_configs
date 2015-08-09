@@ -45,7 +45,8 @@ if [ "$TR_VERSION" == "HEAD" ]; then
     #
     cd dmd
     rev=`GetGitRev`
-    display_version="git($rev)"
+    timestamp=`GetTimeStamp`
+    display_version="git($rev) [built=$timestamp]"
     echo "DisplayVersion => $display_version"
     cd ../
 
