@@ -1,0 +1,11 @@
+{
+    "name": "c++.gcc",
+    "versions": ["HEAD"],
+    "type": "compiler",
+
+    "options": {
+        "default": {
+
+        }
+    }
+}

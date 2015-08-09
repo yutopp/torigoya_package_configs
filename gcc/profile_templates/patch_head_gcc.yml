@@ -1,0 +1,11 @@
+from:
+  versions: ["HEAD"]
+
+to:
+  name: "gcc"
+  versions: ["HEAD"]
+
+append:
+  compile:
+    selectable_commands:
+      "C++14": ["-std=", "c++14"]

@@ -1,0 +1,21 @@
+display_version: "%{display_version}"
+
+is_build_required: true
+is_link_independent: false
+
+compile:
+  extension: "cpp"
+  commands: ["g++", "*FILES*", "*CMD*"]
+  envs:
+    "PATH": "%{install_prefix}/bin:/usr/bin"
+  fixed_commands:
+    - ["-o", "prog.out"]
+  cpu_limit: 10
+  memory_limit: 1073741824  # 1GiB
+
+exec:
+  commands: ["./prog.out", "*CMD*"]
+  envs:
+    "LD_LIBRARY_PATH": "%{install_prefix}/lib/../lib64"
+  cpu_limit: 10
+  memory_limit: 1073741824  # 1GiB
