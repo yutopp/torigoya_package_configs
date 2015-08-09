@@ -14,6 +14,8 @@ echo " - package prefix: $TR_PACKAGE_PREFIX"
 
 echo "================================"
 
+export TR_HEAD="HEAD"
+
 function CheckImport() {
     echo "base script is imported"
 }
@@ -26,6 +28,9 @@ function GetSVNRev() {
     echo `svn info | grep '^Revision:' | sed 's/^Revision: \([0-9]\+\)/\1/'`
 }
 
+function GetTimeStamp() {
+    echo `date '+%Y/%m/%d %H:%M:%S'`
+}
 
 function make_version_name() {
     target_version=$1
