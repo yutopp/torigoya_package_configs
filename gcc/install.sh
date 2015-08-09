@@ -4,83 +4,89 @@ CheckImport || exit -1
 
 case "$TR_VERSION" in
     $TR_HEAD)
-        branch_name="master" ;;
+        # Ggmp
+        GMP_version="5.1.3"
+        GMP_target_filename="gmp-${GMP_version}.tar.bz2"
+        GMP_dirname="gmp-${GMP_version}"
+
+        # mpfr
+        MPFR_version="3.1.2"
+        MPFR_target_filename="mpfr-${MPFR_version}.tar.bz2"
+        MPFR_dirname="mpfr-${MPFR_version}"
+
+        # mpc
+        MPC_version="1.0.3"
+        MPC_target_filename="mpc-${MPC_version}.tar.gz"
+        MPC_dirname="mpc-${MPC_version}"
+        ;;
 
     *)
-        # ex. 5.1.0
-        # ${TR_VERSION:0:1} = 5
-        # ${TR_VERSION:2:1} = 1
-        # ${TR_VERSION:4:1} = 0
-        branch_name="gcc-${TR_VERSION:0:1}_${TR_VERSION:2:1}_${TR_VERSION:4:1}-release" ;;
+        echo "Version $TR_VERSION is not supported"
+        exit -2
 esac
 
 # gcc source code
-if [ -e gcc ]; then
-    cd gcc
-    git fetch origin || exit -1
-    git reset --hard origin/master || exit -1
-    git checkout $branch_name || exit -1
-    cd ..
+if [ "$TR_VERSION" == $TR_HEAD ]; then
+    # head
+    if [ -e gcc ]; then
+        cd gcc
+        git fetch origin || exit -1
+        git reset --hard origin/master || exit -1
+        git checkout $master || exit -1
+        cd ..
+    else
+        git clone git://gcc.gnu.org/git/gcc.git gcc || exit -1
+        cd gcc
+        git checkout $master || exit -1
+        cd ..
+    fi
 else
-    git clone git://gcc.gnu.org/git/gcc.git gcc || exit -1
-    cd gcc
-    git checkout $branch_name || exit -1
-    cd ..
+    GCC_dirname="gcc-${TR_VERSION}"
+
+    # versioned
+    if [ -e gcc ]; then
+        rm -rf gcc
+    fi
+
+    if [ ! -e $GCC_dirname ]; then
+        wget https://ftp.gnu.org/gnu/gcc/$GCC_dirname/$GCC_dirname.tar.bz2 -O $GCC_dirname.tar.bz2
+        tar -jxf $GCC_dirname.tar.bz2
+    fi
+    cp -r $GCC_dirname -T gcc
 fi
 
-
-# gmp
-GMP_version="5.1.3"
-GMP_target_filename="gmp-${GMP_version}.tar.bz2"
-GMP_dirname="gmp-${GMP_version}"
 
 echo "==== GMP : $GMP_version"
 if [ -e gcc/gmp ]; then
     rm -rf gcc/gmp
 fi
-if [ -e $GMP_dirname ]; then
-    cp -r $GMP_dirname -T gcc/gmp
-else
+if [ ! -e $GMP_dirname ]; then
     wget http://ftp.gnu.org/gnu/gmp/$GMP_target_filename -O $GMP_target_filename
     tar -jxf $GMP_target_filename
-    cp -r $GMP_dirname -T gcc/gmp
 fi
+cp -r $GMP_dirname -T gcc/gmp
 
-
-# mpfr
-MPFR_version="3.1.2"
-MPFR_target_filename="mpfr-${MPFR_version}.tar.bz2"
-MPFR_dirname="mpfr-${MPFR_version}"
 
 echo "==== MPFR : $MPFR_version"
 if [ -e gcc/mpfr ]; then
     rm -rf gcc/mpfr
 fi
-if [ -e $MPFR_dirname ]; then
-    cp -r $MPFR_dirname -T gcc/mpfr
-else
+if [ ! -e $MPFR_dirname ]; then
     wget http://ftp.gnu.org/gnu/mpfr/$MPFR_target_filename -O $MPFR_target_filename
     tar -jxf $MPFR_target_filename
-    cp -r $MPFR_dirname -T gcc/mpfr
 fi
+cp -r $MPFR_dirname -T gcc/mpfr
 
-
-# MPC
-MPC_version="1.0.3"
-MPC_target_filename="mpc-${MPC_version}.tar.gz"
-MPC_dirname="mpc-${MPC_version}"
 
 echo "==== MPC : $MPC_version"
 if [ -e gcc/mpc ]; then
     rm -rf gcc/mpc
 fi
-if [ -e $MPC_dirname ]; then
-    cp -r $MPC_dirname -T gcc/mpc
-else
+if [ ! -e $MPC_dirname ]; then
     wget http://ftp.gnu.org/gnu/mpc/$MPC_target_filename -O $MPC_target_filename
     tar xzvf $MPC_target_filename
-    cp -r $MPC_dirname -T gcc/mpc
 fi
+cp -r $MPC_dirname -T gcc/mpc
 
 
 # GCC version
@@ -138,7 +144,8 @@ if [ "$TR_VERSION" == $TR_HEAD ]; then
     make all -j$TR_CPU_CORE || make -j$TR_CPU_CORE || exit -1
     make install
 
-    PackEdgeDebFromDir $TR_INSTALL_PREFIX $TR_PACKAGE_NAME $TR_VERSION $display_version
+    # must quote $display_version
+    PackEdgeDebFromDir $TR_INSTALL_PREFIX $TR_PACKAGE_NAME $TR_VERSION "$display_version"
     exit 0
 
 else

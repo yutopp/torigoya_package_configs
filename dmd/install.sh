@@ -84,7 +84,8 @@ if [ "$TR_VERSION" == "HEAD" ]; then
     cp -r etc $TR_INSTALL_PREFIX/src/phobos/.
     cd ../
 
-    PackEdgeDebFromDir $TR_INSTALL_PREFIX $TR_PACKAGE_NAME $TR_VERSION $display_version
+    # must quote $display_version
+    PackEdgeDebFromDir $TR_INSTALL_PREFIX $TR_PACKAGE_NAME $TR_VERSION "$display_version"
     exit 0
 
 else

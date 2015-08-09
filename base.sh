@@ -65,7 +65,7 @@ function PackEdgeDebFromDir() {
     raw_version=$3
     display_version=$4
     shift; shift; shift; shift;
-    fpm_options=$@
+    fpm_options="$@"
 
     # package name will be "$prefix$name-$version"
     # package version will be date
@@ -76,23 +76,35 @@ function PackEdgeDebFromDir() {
 
     echo "package_name    => $package_name"
     echo "package_version => $package_version"
+    echo "display_version => $display_version"
+    echo "installed_dir   => $installed_dir"
+    echo "fpm_options     => $fpm_options"
+
+    if [ "$display_version" == "" ]; then
+        echo "display_version is empty"
+        exit -20
+    fi
 
     # make
     mkdir /tmp/torigoya_generated_packages || exit -30
     cd /tmp/torigoya_generated_packages || exit -31
 
     # make package
-    fpm $fpm_options --force -s dir -t deb -n $package_name -v $package_version --deb-compression xz --verbose $installed_dir
+    fpm $fpm_options --force -s dir -t deb -n $package_name -v $package_version --deb-compression xz --verbose $installed_dir || exit -32
 
     # TODO: fix...
     pkg_file_name=`ls`
     echo "Generated pkg name: $pkg_file_name"
+    if [ "$pkg_file_name" == "" ]; then
+        echo "pkg_file_name is empty"
+        exit -33
+    fi
 
     # copy
     cp $pkg_file_name $TR_PKGS_PATH/.
 
     # generated result json
-    cd $TR_PKGS_PATH || exit -32
+    cd $TR_PKGS_PATH || exit -34
     json_file_name="result-$base_package_name-$raw_version.json"
     echo "Writing result to $json_file_name ..."
     cat << EOF_JSON > $json_file_name
