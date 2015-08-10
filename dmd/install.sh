@@ -20,7 +20,7 @@ if [ "$TR_VERSION" == "HEAD" ]; then
     else
         cd dmd
         git fetch origin || exit -1
-        git reset --hard origin/master
+        git reset --hard origin/master || exit -1
         cd ../
     fi
 
@@ -29,7 +29,7 @@ if [ "$TR_VERSION" == "HEAD" ]; then
     else
         cd druntime
         git fetch origin || exit -1
-        git reset --hard origin/master
+        git reset --hard origin/master || exit -1
         cd ../
     fi
 
@@ -38,7 +38,7 @@ if [ "$TR_VERSION" == "HEAD" ]; then
     else
         cd phobos
         git fetch origin || exit -1
-        git reset --hard origin/master
+        git reset --hard origin/master || exit -1
         cd ../
     fi
 
@@ -68,20 +68,20 @@ if [ "$TR_VERSION" == "HEAD" ]; then
     #
     cd dmd/src
     mkdir -p $TR_INSTALL_PREFIX/bin64
-    cp dmd $TR_INSTALL_PREFIX/bin64
+    cp dmd $TR_INSTALL_PREFIX/bin64 || exit -1
 
     cd ../../druntime
     mkdir -p $TR_INSTALL_PREFIX/src/druntime
-    cp -r import $TR_INSTALL_PREFIX/src/druntime/.
+    cp -r import $TR_INSTALL_PREFIX/src/druntime/. || exit -1
 
     cd ../phobos
     mkdir -p $TR_INSTALL_PREFIX/lib64
-    cp generated/linux/release/64/libphobos2.a $TR_INSTALL_PREFIX/lib64    # for 64-bit version
-    # cp generated/linux/release/32/libphobos2.a $TR_INSTALL_PREFIX/lib    # for 32-bit version
+    cp generated/linux/release/64/libphobos2.a $TR_INSTALL_PREFIX/lib64 || exit -1  # for 64-bit version
+    # cp generated/linux/release/32/libphobos2.a $TR_INSTALL_PREFIX/lib || exit -1  # for 32-bit version
 
     mkdir -p $TR_INSTALL_PREFIX/src/phobos
-    cp -r std $TR_INSTALL_PREFIX/src/phobos/.
-    cp -r etc $TR_INSTALL_PREFIX/src/phobos/.
+    cp -r std $TR_INSTALL_PREFIX/src/phobos/. || exit -1
+    cp -r etc $TR_INSTALL_PREFIX/src/phobos/. || exit -1
     cd ../
 
     # must quote $display_version

@@ -28,6 +28,10 @@ function GetSVNRev() {
     echo `svn info | grep '^Revision:' | sed 's/^Revision: \([0-9]\+\)/\1/'`
 }
 
+function GetMercurialRev() {
+    echo `hg id -i`
+}
+
 function GetTimeStamp() {
     echo `date '+%Y/%m/%d %H:%M:%S'`
 }
