@@ -1,7 +1,6 @@
 echo "=== Subako Build Script Base ==="
 
 echo " - reuse:          $TR_REUSE_FLAG"
-echo " - name:           $TR_NAME"
 echo " - version:        $TR_VERSION"
 echo " - target system:  $TR_TARGET_SYSTEM"
 echo " - target arch:    $TR_TARGET_ARCH"
@@ -11,6 +10,11 @@ echo " - cpu core:       $TR_CPU_CORE"
 echo " - install prefix: $TR_INSTALL_PREFIX"
 echo " - package name:   $TR_PACKAGE_NAME"
 echo " - package prefix: $TR_PACKAGE_PREFIX"
+
+echo " - dep pkg gen name:      $TR_DEP_PKG_GEN_NAME"
+echo " - dep pkg gen version:   $TR_DEP_PKG_GEN_VERSION"
+echo " - dep pkg disp version:  $TR_DEP_PKG_DISP_VERSION"
+echo " - dep pkg path:          $TR_DEP_PKG_PATH"
 
 echo "================================"
 

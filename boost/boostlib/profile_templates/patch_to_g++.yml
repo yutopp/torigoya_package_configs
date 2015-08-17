@@ -1,0 +1,14 @@
+from:
+  versions: ["1.59.0"]
+
+to:
+  name: "c++.gcc"
+  versions: ["HEAD"]
+
+append:
+  compile:
+    selectable_options:
+      "boost-%{version}": [
+        "-I", "%{install_prefix}/include",
+        "%{install_prefix}/lib/libboost_system.a"
+      ]

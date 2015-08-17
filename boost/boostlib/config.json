@@ -1,0 +1,11 @@
+{
+    "name": "boostlib",
+    "versions": ["1.59.0"],
+    "type": "library",
+
+    "options": {
+        "default": {
+
+        }
+    }
+}

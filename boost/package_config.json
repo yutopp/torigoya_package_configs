@@ -1,0 +1,14 @@
+{
+    "name": "BoostLib",
+    "versions": ["1.59.0"],
+
+    "dep_pkgs": {
+        "gcc": ["HEAD"]
+    },
+
+    "options": {
+        "default": {
+
+        }
+    }
+}

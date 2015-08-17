@@ -1,7 +1,6 @@
 {
-    "name": "dlang.dmd",
+    "name": "dmd",
     "versions": ["HEAD", "2.064.2", "2.065.0", "2.066.0", "2.067.0"],
-    "type": "compiler",
 
     "options": {
         "default": {

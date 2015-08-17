@@ -1,0 +1,13 @@
+from:
+  versions: ["HEAD"]
+
+to:
+  name: "c++.gcc"
+  versions: ["HEAD"]
+
+append:
+  compile:
+    selectable_options:
+      "C++11": ["-std=", "c++11"]
+      "C++14": ["-std=", "c++14"]
+      "C++17": ["-std=", "c++17"]

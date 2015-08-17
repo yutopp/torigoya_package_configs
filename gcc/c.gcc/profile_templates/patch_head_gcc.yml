@@ -1,0 +1,13 @@
+from:
+  versions: ["HEAD"]
+
+to:
+  name: "c.gcc"
+  versions: ["HEAD"]
+
+append:
+  compile:
+    selectable_options:
+      "C89": ["-std=", "c89"]
+      "C99": ["-std=", "c99"]
+      "C11": ["-std=", "c11"]
