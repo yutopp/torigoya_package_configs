@@ -11,6 +11,8 @@ echo " - install prefix: $TR_INSTALL_PREFIX"
 echo " - package name:   $TR_PACKAGE_NAME"
 echo " - package prefix: $TR_PACKAGE_PREFIX"
 
+echo " - dep pkg name:          $TR_DEP_PKG_NAME"
+echo " - dep pkg version:       $TR_DEP_PKG_VERSION"
 echo " - dep pkg gen name:      $TR_DEP_PKG_GEN_NAME"
 echo " - dep pkg gen version:   $TR_DEP_PKG_GEN_VERSION"
 echo " - dep pkg disp version:  $TR_DEP_PKG_DISP_VERSION"

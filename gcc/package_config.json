@@ -1,6 +1,7 @@
 {
     "name": "gcc",
     "versions": ["HEAD"],
+    "queue_with": ["BoostLib"],
 
     "options": {
         "default": {

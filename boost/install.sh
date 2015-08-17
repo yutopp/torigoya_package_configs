@@ -8,8 +8,11 @@ if [ "$TR_VERSION" == "$TR_HEAD" ]; then
 
 else
     # TODO: fix
-    wget http://sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.gz/download -O boost_1_59_0.tar.gz
-    tar xzvf boost_1_59_0.tar.gz
+    dir_name=boost_`echo "$TR_VERSION" | sed -s 's/\./\_/g'`
+    echo "boost => $dir_name"
+
+    wget http://sourceforge.net/projects/boost/files/boost/$TR_VERSION/${dir_name}.tar.gz/download -O ${dir_name}.tar.gz
+    tar xzvf ${dir_name}.tar.gz
 
     #
     if [ -e $TR_INSTALL_PREFIX ]; then
@@ -17,12 +20,32 @@ else
     fi
     mkdir -p $TR_INSTALL_PREFIX/
 
-    cd boost_1_59_0
+    cd ${dir_name}
     ./bootstrap.sh -prefix=$TR_INSTALL_PREFIX
 
-    # TODO: set toolchain
+    if [ "$TR_DEP_PKG_NAME" == "gcc" ]; then
+        toolset="gcc"
+        flags=""
+
+        export PATH="$TR_DEP_PKG_PATH/bin:$PATH"
+        export LD_LIBRARY_PATH="$TR_DEP_PKG_PATH/lib/../lib64"
+
+    else
+        echo "toolset $TR_DEP_PKG_NAME is not supported"
+        exit -1
+    fi
+
+    echo "toolset         => $toolset"
+    echo "PATH            => $PATH"
+    echo "LD_LIBRARY_PATH => $LD_LIBRARY_PATH"
+
     ./b2 --with-system \
-         -j 2 cxxflags="-std=c++11" link=static install
+         -j2 \
+         toolset=$toolset \
+         cxxflags="-std=c++11 $flags" \
+         link=static \
+         install \
+        || exit -1
 
     cd ../
 
